@@ -1,8 +1,0 @@
-# Visual Studio 缓存文件
-.vs/
-bin/
-obj/
-*.user
-*.suo
-*.pidb
-*.sqlite
