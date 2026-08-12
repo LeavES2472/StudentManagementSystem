@@ -1,0 +1,14 @@
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.GeneratedMSBuildEditorConfig.editorconfig
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.AssemblyInfoInputs.cache
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.AssemblyInfo.cs
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.csproj.CoreCompileInputs.cache
+D:\VS2026\Project\学生成绩管理系统\bin\Debug\net10.0\学生成绩管理系统.exe
+D:\VS2026\Project\学生成绩管理系统\bin\Debug\net10.0\学生成绩管理系统.deps.json
+D:\VS2026\Project\学生成绩管理系统\bin\Debug\net10.0\学生成绩管理系统.runtimeconfig.json
+D:\VS2026\Project\学生成绩管理系统\bin\Debug\net10.0\学生成绩管理系统.dll
+D:\VS2026\Project\学生成绩管理系统\bin\Debug\net10.0\学生成绩管理系统.pdb
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.dll
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\refint\学生成绩管理系统.dll
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.pdb
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\学生成绩管理系统.genruntimeconfig.cache
+D:\VS2026\Project\学生成绩管理系统\obj\Debug\net10.0\ref\学生成绩管理系统.dll
