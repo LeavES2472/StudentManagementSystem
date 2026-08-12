@@ -19,14 +19,13 @@ namespace 学生成绩管理系统
         private int _nextId = 1; // 从1开始分配ID
         Dictionary<int, Student> students = new Dictionary<int, Student>();
 
-        // ----- 新增：数据访问方法 -----
+        //数据访问方法
         //获取students的值转换成列表
-        public List<Student> GetAllStudents() => students.Values.ToList();
+        public IEnumerable<Student> GetAllStudents() => students.Values;
         public List<Student> FindStudentsByName(string name) =>
                 students.Values
                 .Where(kv => kv.Name != null && kv.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-        public Student? FindStudentById(int id) => students.ContainsKey(id) ? students[id] : null;
         public bool AddStudent(string name, double score)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -45,12 +44,12 @@ namespace 学生成绩管理系统
 
         }
 
-        // ----- 按 ID 删除 -----
+        //按 ID 删除
         public bool DeleteStudent(int id)
         {
             return students.Remove(id);
         }
-        // ----- 按姓名删除（只删第一个匹配的）-----
+        //按姓名删除（只删第一个匹配的
         public bool DeleteStudent(string name)
         {
             var matched = FindStudentsByName(name);
@@ -60,7 +59,7 @@ namespace 学生成绩管理系统
             var target = matched.First();
             return students.Remove(target.Id);
         }
-        // ----- 修改学生信息 -----
+        //修改学生信息
         public bool UpdateStudent(int id, string newName, double newScore)
         {
             if (!students.ContainsKey(id))
@@ -70,7 +69,7 @@ namespace 学生成绩管理系统
             s.Score = newScore;
             return true;
         }
-        // ----- 按姓名修改（只改第一个匹配的）-----
+        //按姓名修改（只改第一个匹配的）
         public bool UpdateStudent(string name, string newName, double newScore)
         {
             var matched = FindStudentsByName(name);
@@ -81,7 +80,7 @@ namespace 学生成绩管理系统
             s.Score = newScore;
             return true;
         }
-        public Student? GetStudentById(int id) => FindStudentById(id);
+        public Student? GetStudentById(int id) => students.GetValueOrDefault(id);
         public Student? GetStudentByName(string name)
         {
             var matched = FindStudentsByName(name);
@@ -139,7 +138,6 @@ namespace 学生成绩管理系统
         public static void MenuChoice()
         {
             //将选择与循环分离
-            StudentManager studentManager = new StudentManager();
             Dictionary<int, SceneFunction> chooseScene = new Dictionary<int, SceneFunction>()
             {
                 {1,AddStudentUI },
@@ -147,7 +145,7 @@ namespace 学生成绩管理系统
                 {3,UpdateStudentUI  },
                 {4,FindStudentUI  },
                 {5,DisplayAllUI  },
-                {6, () => SortMenuChoice(studentManager) },  // 传入同一个 manager 实例
+                {6,SortMenuChoice }, 
                 {7,() => Environment.Exit(0)  },
             };
 
@@ -161,7 +159,7 @@ namespace 学生成绩管理系统
                     if (chooseScene.ContainsKey(menuChoice))
                     {
                         chooseScene[menuChoice].Invoke();// 执行对应的方法
-                        // 执行完后，重新显示菜单（可选）
+                        // 执行完后，重新显示菜单
                         MainMenu();
                         WriteLine("请继续选择:");
                     }
@@ -177,7 +175,7 @@ namespace 学生成绩管理系统
             }
 
         }
-        public static void SortMenuChoice(StudentManager manager)
+        public static void SortMenuChoice()
         {
             while (true)
             {
@@ -211,11 +209,11 @@ namespace 学生成绩管理系统
         }
         public static void AddStudentUI()
         {
-            // 1. 获取姓名（非空校验）
+            // 1. 获取姓名
             WriteLine("请输入学生姓名（不能为空）：");
             string? name = ReadLine();
 
-            // 2. 获取成绩（数字校验）
+            // 2. 获取成绩
             WriteLine("请输入学生成绩（数字）：");
             string? scoreInput = ReadLine();
             if (!double.TryParse(scoreInput, out double score))
@@ -257,21 +255,26 @@ namespace 学生成绩管理系统
             string? name = ReadLine();
             WriteLine("请输入修改后的学生成绩：");
             string? score = ReadLine();
-            if(!double.TryParse(score,out double newScore))
+            if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(name))
+            {
+                WriteLine("姓名不能为空");
+                return;
+            }
+            if (!double.TryParse(score, out double newScore))
             {
                 WriteLine("成绩格式错误，请输入有效的数字");
                 return;
             }
             if (int.TryParse(input, out int id))
             {
-                if (manager.UpdateStudent(id,name!,newScore))
+                if (manager.UpdateStudent(id, name!, newScore))
                     WriteLine("修改成功");
                 else
                     WriteLine("未找到该ID的学生");
             }
             else
             {
-                if (manager.UpdateStudent(input!,name!,newScore))
+                if (manager.UpdateStudent(input!, name!, newScore))
                     WriteLine("修改成功");
                 else
                     WriteLine("未找到该姓名的学生");
@@ -281,12 +284,12 @@ namespace 学生成绩管理系统
         {
             WriteLine("请输入你要查询的学生姓名或ID");
             string? inputNameOrId = ReadLine();
-            
-            if(int.TryParse(inputNameOrId,out int id))
+
+            if (int.TryParse(inputNameOrId, out int id))
             {
                 var student = manager.GetStudentById(id);
-                if (student!=null)
-                    WriteLine($"查找到的学生ID:{id},姓名:{student.Name},成绩:{student.Score}");
+                if (student != null)
+                    WriteLine($"查找到的学生ID:{student.Id},姓名:{student.Name},成绩:{student.Score}");
                 else
                     WriteLine("未查找到学生信息");
             }
@@ -294,15 +297,15 @@ namespace 学生成绩管理系统
             {
                 var student = manager.GetStudentByName(inputNameOrId!);
                 if (student != null)
-                    WriteLine($"查找到的学生ID:{id},姓名:{student.Name},成绩:{student.Score}");
+                    WriteLine($"查找到的学生ID:{student.Id},姓名:{student.Name},成绩:{student.Score}");
                 else
                     WriteLine("未查找到学生信息");
             }
-            
+
         }
         public static void DisplayAllUI()
         {
-            var all = manager.GetAllStudents();
+            var all = manager.GetAllStudents().ToList();
             if (all.Count == 0)
             {
                 WriteLine("暂无学生信息");
